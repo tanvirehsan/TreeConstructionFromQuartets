@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -131,8 +131,9 @@ namespace TreeConstructionFromQuartets
             objSplit._RightPartOfSplit.Add(q._Fourth_Taxa_Value);
             objSplit._RightPartOfSplit = getUnionOfTaxaList(objSplit._RightPartOfSplit, model._RightPartOfSplit);
 
-            objSplit._LeftPartOfSplit.Sort();
-            objSplit._RightPartOfSplit.Sort();
+            //Disable Sorting for avoiding memory leakage
+            //objSplit._LeftPartOfSplit.Sort();
+            //objSplit._RightPartOfSplit.Sort();
             objSplit._CountTaxa = objSplit._LeftPartOfSplit.Count() + objSplit._RightPartOfSplit.Count();
 
             return objSplit;
