@@ -1,0 +1,12 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+App_Data
+[Bb]in
+[Oo]bj
+*.suo
+*.user
+*.[Cc]ache
+packages
+.[Vv][Ss]
+NuGet.exe
+*.exe
+*.dll
