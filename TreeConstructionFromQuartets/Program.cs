@@ -6,8 +6,8 @@
     using System.IO;
     using TreeConstructionFromQuartets.Model;
     public class Program
-    {
-        static void Main(string[] args)
+    {   
+        static void Main1(string[] args)
         {
             ProgramCalculation obj;
             string DuplicationMethod = ConfigurationManager.AppSettings["DuplicationMethod"].ToString();
@@ -96,6 +96,13 @@
             }
             
            
+        }
+
+        static void Main(string[] args)
+        {
+
+            NewDuplicationCalculation obj = new NewDuplicationCalculation();
+
         }
 
     }
