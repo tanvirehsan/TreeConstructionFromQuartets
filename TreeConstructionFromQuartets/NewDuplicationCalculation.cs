@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,16 +11,126 @@ using TreeConstructionFromQuartets.Model;
 namespace TreeConstructionFromQuartets
 {
     public class NewDuplicationCalculation
-    { 
-       
+    {
+        string PathDepthOne = ConfigurationManager.AppSettings["PathDepthOne"].ToString();
+        string PathInconsistentQuatret = ConfigurationManager.AppSettings["PathInconsistentQuatret"].ToString();
+        List<Taxa> wrongPositionedTaxaList = new List<Taxa>();
+        //List<TreeNode> node = new List<TreeNode>();
+
         public NewDuplicationCalculation()
         {
-            string patthDept1 = @"E:\Mizans Research\Inputs\DepethOne.txt";
-            string pathInconsistentQuatret = @"E:\Mizans Research\Inputs\InConsistentQuatret.txt";
-
-            depth1Elements = readDepthOneElementInput(patthDept1);
-            ListOfInconsistent = readInconsistentQuatret(pathInconsistentQuatret);
+            depth1Elements = readDepthOneElementInput(PathDepthOne);
+            ListOfInconsistent = readInconsistentQuatret(PathInconsistentQuatret);
         }
+
+        public void CalculateWrongTaxa()
+        {
+
+            foreach (Quartet q in ListOfInconsistent)
+            {
+
+                Taxa t1 = getTaxa(q._First_Taxa_Value);
+                Taxa t2 = getTaxa(q._Second_Taxa_Value);
+                Taxa t3 = getTaxa(q._Third_Taxa_Value);
+                Taxa t4 = getTaxa(q._Fourth_Taxa_Value);
+                int p1 = getPosition(t1);
+                int p2 = getPosition(t2);
+                int p3 = getPosition(t3);
+                int p4 = getPosition(t4);
+
+                if (p1 != -1 || p2 != -1 || p3 != -1 || p4 != -1)
+                {
+
+                    if (inBetween(p1, p3, p2) && inBetween(p1, p4, p2))
+                    {
+                        //wrong Tax p1 or p2
+                    }
+
+                    //if (inBetween(p3, p1, p4) && inBetween(p3, p2, p4))
+                    //{
+                    //    // wrong Tax p3 or p4
+                    //}
+
+                    if (inBetween(p1, p3, p2) && p4 > p2)
+                    {
+                        //wrong Tax p3
+                    }
+
+                    if (inBetween(p1, p4, p2) && p3 > p2)
+                    {
+                        //wrong Tax p4
+                    }
+
+
+                    if (inBetween(p3, p1, p4) && p2 > p4)
+                    {
+                        //wrong Tax p1
+                    }
+
+                    if (inBetween(p3, p2, p4) && p1 > p4)
+                    {
+                        //wrong Tax p2
+                    }
+
+
+
+                }
+
+            }
+
+        }
+
+        public bool inBetween(int v1, int v2, int v3)
+        {
+            if (v1 < v2 && v3 > v2)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+
+        public Taxa getTaxa(string tV)
+        {
+            Taxa t = new Taxa();
+            t._Taxa_Value = tV;
+            return t;
+        }
+
+        public int getPosition(Taxa tx)
+        {
+
+            int position = -1;
+            foreach (TreeNode node in depth1Elements.NodeList)
+            {
+                foreach (Taxa t in node.TaxaList)
+                {
+
+                    if (t._Taxa_Value == tx._Taxa_Value)
+                    {
+                        position = node._Position;
+                        break;
+                    }
+
+
+                }
+            }
+
+            return position;
+        }
+
+        //public List<TreeNode> getRelevantDepthOneElement() {
+
+
+        //}
+
+        public bool isWorngTaxa()
+        {
+
+            return false;
+        }
+
         public List<Quartet> readInconsistentQuatret(string path)
         {
 
