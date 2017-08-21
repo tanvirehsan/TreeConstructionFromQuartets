@@ -311,138 +311,7 @@ namespace TreeConstructionFromQuartets
             return statusClass;
 
         }
-        //#region Supperss
-        //public void recursiveChecking(int p1, string t1, int p2, string t2, int p3, string t3, int p4, string t4, Quartet q)
-        //{
-        //    //WrongTaxa wrongTaxa;
-        //    if (isOverlap(p1, p2, p3, p4))
-        //    {
-        //        calculateWrongTaxa(p1, t1, p2, t2, p3, t3, p4, t4, q);
 
-        //    }
-        //    else if (isOverlap(p1, p2, p4, p3))
-        //    {
-        //        calculateWrongTaxa(p1, t1, p2, t2, p4, t4, p3, t3, q);
-        //    }
-        //    else if (isOverlap(p2, p1, p3, p4))
-        //    {
-        //        calculateWrongTaxa(p2, t2, p1, t1, p3, t3, p4, t4, q);
-        //    }
-        //    else if (isOverlap(p2, p1, p4, p3))
-        //    {
-        //        calculateWrongTaxa(p2, t2, p1, t1, p4, t4, p3, t3, q);
-        //    }
-        //    else if (isOverlap(p3, p4, p1, p2))
-        //    {
-        //        calculateWrongTaxa(p3, t3, p4, t4, p1, t1, p2, t2, q);
-        //    }
-        //    else if (isOverlap(p3, p4, p2, p1))
-        //    {
-        //        calculateWrongTaxa(p3, t3, p4, t4, p2, t2, p1, t1, q);
-        //    }
-        //    else if (isOverlap(p4, p3, p1, p2))
-        //    {
-        //        calculateWrongTaxa(p4, t4, p3, t3, p1, t1, p2, t2, q);
-        //    }
-        //    else if (isOverlap(p4, p3, p2, p1))
-        //    {
-        //        calculateWrongTaxa(p4, t4, p3, t3, p2, t2, p1, t1, q);
-        //    }
-        //}
-
-        //public void calculateWrongTaxa(int p1, string t1, int p2, string t2, int p3, string t3, int p4, string t4, Quartet q)
-        //{
-        //    ExpressionStatus status = checkingExpression(p1, p2, p3, p4);
-        //    WrongTaxa wrongTaxa;
-        //    // bool expression1 = p1 < p4;
-        //    // bool expression2 = p3 < p2;
-
-        //    if (status == ExpressionStatus.TrueTrue)
-        //    {
-        //        if (isInWrongTaxa(t1))
-        //        {
-        //            status = ExpressionStatus.FalseTrue;
-        //        }
-        //        else if (isInWrongTaxa(t2))
-        //        {
-        //            status = ExpressionStatus.TrueFalse;
-        //        }
-        //        else if (isInWrongTaxa(t4))
-        //        {
-        //            status = ExpressionStatus.FalseTrue;
-        //        }
-        //        else if (isInWrongTaxa(t3))
-        //        {
-        //            status = ExpressionStatus.TrueFalse;
-        //        }
-        //        else
-        //        {
-        //            //Random rnd = new Random();
-        //            //int val = rnd.Next(1, 100);
-        //            //if (val % 2 == 0)
-        //            //{
-        //            //    status = ExpressionStatus.TrueFalse;
-        //            //}
-        //            //else
-        //            //{
-        //            status = ExpressionStatus.FalseTrue;
-        //            // }
-
-        //        }
-
-        //    }
-
-        //    if (status == ExpressionStatus.FalseFalse)
-        //    {
-        //        //p1,p2 or p3,p4
-        //    }
-        //    else if (status == ExpressionStatus.FalseTrue)
-        //    {
-        //        //p1 or p4
-        //        if (isInWrongTaxa(t1))
-        //        {
-
-        //        }
-        //        else if (isInWrongTaxa(t4))
-        //        {
-
-        //        }
-        //        else
-        //        {
-
-        //            wrongTaxa = new WrongTaxa();
-        //            wrongTaxa.Taxa = getTaxa(t1);
-        //            wrongTaxa.Quartet = q;
-        //            wrongTaxa._PositionIntheDepthOne = p1;
-        //            wrongPositionedTaxaList.Add(wrongTaxa);
-        //        }
-
-        //    }
-        //    else if (status == ExpressionStatus.TrueFalse)
-        //    {
-        //        //p3 or p2
-
-        //        if (isInWrongTaxa(t2))
-        //        {
-
-        //        }
-        //        else if (isInWrongTaxa(t3))
-        //        {
-
-        //        }
-        //        else
-        //        {
-
-        //            wrongTaxa = new WrongTaxa();
-        //            wrongTaxa.Taxa = getTaxa(t2);
-        //            wrongTaxa.Quartet = q;
-        //            wrongTaxa._PositionIntheDepthOne = p2;
-        //            wrongPositionedTaxaList.Add(wrongTaxa);
-        //        }
-
-        //    }
-
-        //}
 
         public bool isInWrongTaxa(string taxa)
         {
@@ -483,98 +352,74 @@ namespace TreeConstructionFromQuartets
             return false;
         }
 
-        //#region Supperss
-        //public ExpressionStatus checkingExpression(int p1, int p2, int p3, int p4)
-        //{
 
-        //    bool expression1 = p1 < p4;
-        //    bool expression2 = p3 < p2;
-
-        //    if (expression1 && !expression2)
-        //    {
-        //        return ExpressionStatus.TrueFalse;
-        //    }
-        //    else if (!expression1 && expression2)
-        //    {
-        //        return ExpressionStatus.FalseTrue;
-        //    }
-        //    else if (!expression1 && !expression2)
-        //    {
-        //        return ExpressionStatus.FalseFalse;
-        //    }
-        //    else if (expression1 && expression2)
-        //    {
-        //        return ExpressionStatus.TrueTrue;
-        //    }
-        //    return ExpressionStatus.None;
-        //}
-
-        //public bool isOverlap(int p1, int p2, int p3, int p4)
-        //{
-        //    bool overlap = false;
-        //    overlap = p1 < p4 && p3 < p2;
-        //    return overlap;
-        //}
-        //#endregion
 
         public WrongPositionStatus whoisInWrongPosition(int aStart, string taStart, int aEnd, string taEnd, int bStart, string tbStart, int bEnd, string tbEnd, Quartet q)
         {
             WrongPositionStatus status = WrongPositionStatus.None;
 
-            if (isInWrongTaxa(taStart))
-            {
-                status = WrongPositionStatus.aStart;
-                return status;
-            }
 
-            if (isInWrongTaxa(taEnd))
-            {
-                status = WrongPositionStatus.aEnd;
-                return status;
-            }
-
-            if (isInWrongTaxa(tbStart))
-            {
-                status = WrongPositionStatus.bStart;
-                return status;
-            }
-
-            if (isInWrongTaxa(tbEnd))
-            {
-                status = WrongPositionStatus.bEnd;
-                return status;
-            }
-
-
+            //Case 1
             if (inBetween(aStart, bStart, aEnd) && inBetween(aStart, bEnd, aEnd) && bStart < bEnd)
             {
-                // aStart or aEnd in wrong position
-                status = WrongPositionStatus.aStart;
+
+                if (isInWrongTaxa(taStart))
+                    status = WrongPositionStatus.aStart;
+                else if (isInWrongTaxa(taEnd))
+                    status = WrongPositionStatus.aEnd;
+                else
+                    // aStart or aEnd in wrong position
+                    status = WrongPositionStatus.aStart;
+
             }
+            //Case 2
             else if (inBetween(aStart, bStart, aEnd) && inBetween(bStart, aEnd, bEnd) && bStart < bEnd && aStart < bEnd)
             {
-                // bStart in wrong position
-                status = WrongPositionStatus.bStart;
+                if (isInWrongTaxa(taEnd))
+                    status = WrongPositionStatus.aEnd;
+                else
+                    // bStart in wrong position
+                    status = WrongPositionStatus.bStart;
             }
+            //Case 3
             else if (inBetween(bStart, aStart, bEnd) && inBetween(aStart, bEnd, aEnd) && bStart < bEnd && bStart < aEnd)
             {
-                // bEnd in wrong position
-                status = WrongPositionStatus.bEnd;
+                if (isInWrongTaxa(taStart))
+                    status = WrongPositionStatus.aStart;
+                else
+                    // bEnd in wrong position
+                    status = WrongPositionStatus.bEnd;
             }
+            //Case 4
             else if (aStart == bStart && aEnd == bEnd && aStart < aEnd)
             {
-                //bStart and bEnd 
-                status = WrongPositionStatus.bStartAndbEndBoth;
+                if (isInWrongTaxa(taStart))
+                    status = WrongPositionStatus.aStart;
+                else if (isInWrongTaxa(taEnd))
+                    status = WrongPositionStatus.aEnd;
+                else if (isInWrongTaxa(tbEnd))
+                    status = WrongPositionStatus.bEnd;
+                else
+                    //bStart and bEnd both
+                    status = WrongPositionStatus.bStart;
             }
+            //Case 5
             else if (inBetween(aStart, bStart, aEnd) && aEnd == bEnd && aStart < aEnd)
             {
-                // bStart in wrong position
-                status = WrongPositionStatus.bStart;
+                if (isInWrongTaxa(taStart))
+                    status = WrongPositionStatus.aStart;
+                else
+                    // bStart in wrong position
+                    status = WrongPositionStatus.bStart;
             }
+            //Case 6
             else if (inBetween(aStart, bEnd, aEnd) && aStart == bStart && aStart < aEnd)
             {
-                // bStart in wrong position
-                status = WrongPositionStatus.aStart;
+                if (isInWrongTaxa(tbEnd))
+                    status = WrongPositionStatus.bEnd;
+                else
+                    // aStart in wrong position
+                    status = WrongPositionStatus.aStart;
             }
 
             return status;
@@ -615,14 +460,7 @@ namespace TreeConstructionFromQuartets
 
 
     }
-    //public enum ExpressionStatus
-    //{
-    //    None,
-    //    TrueFalse,
-    //    FalseTrue,
-    //    FalseFalse,
-    //    TrueTrue
-    //}
+
 
     public class WrongPositionStatusClass
     {
