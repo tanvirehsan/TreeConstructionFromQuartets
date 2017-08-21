@@ -21,6 +21,7 @@
                 if (DuplicationCalculationMethod.ToUpper() == "NEW")
                 {
                     NewDuplicationCalculation objNewDuplicationCalculation = new NewDuplicationCalculation();
+                    objNewDuplicationCalculation.CalculateWrongTaxa();
                 }
                 else
                 {
