@@ -137,7 +137,7 @@ namespace TreeConstructionFromQuartets
         //Main Method to Calculate Wrong Taxa
         public void CalculateWrongTaxa()
         {
-            int i = 0;
+
             WrongPositionStatusClass obj;
             WrongTaxa wrongTaxa;
             Quartet qQuartet;
@@ -154,90 +154,49 @@ namespace TreeConstructionFromQuartets
                 int p4 = getPosition(t4);
                 obj = new WrongPositionStatusClass();
 
-                if (i == 0)
+
+                obj = CalculateWrongPosition(p1, t1._Taxa_Value, p2, t2._Taxa_Value, p3, t3._Taxa_Value, p4, t4._Taxa_Value, q);
+
+
+
+
+                wrongTaxa = new WrongTaxa();
+
+                if (obj.WrongPositionStatus == WrongPositionStatus.aStart)
                 {
-                    obj = CalculateWrongPosition(p1, t1._Taxa_Value, p2, t2._Taxa_Value, p3, t3._Taxa_Value, p4, t4._Taxa_Value, q);
+                    wrongTaxa.wrongPositionStatus = WrongPositionStatus.aStart;
+                    wrongTaxa.Taxa = getTaxa(obj.taStart);
+                    wrongTaxa._PositionIntheDepthOne = obj.aStart;
+                }
+                else if (obj.WrongPositionStatus == WrongPositionStatus.aEnd)
+                {
+                    wrongTaxa.wrongPositionStatus = WrongPositionStatus.aEnd;
+                    wrongTaxa.Taxa = getTaxa(obj.taEnd);
+                    wrongTaxa._PositionIntheDepthOne = obj.aEnd;
+                }
+                else if (obj.WrongPositionStatus == WrongPositionStatus.bStart)
+                {
+                    wrongTaxa.wrongPositionStatus = WrongPositionStatus.bStart;
+                    wrongTaxa.Taxa = getTaxa(obj.tbStart);
+                    wrongTaxa._PositionIntheDepthOne = obj.bStart;
+                }
+                else if (obj.WrongPositionStatus == WrongPositionStatus.bEnd)
+                {
+                    wrongTaxa.wrongPositionStatus = WrongPositionStatus.bEnd;
+                    wrongTaxa.Taxa = getTaxa(obj.tbEnd);
+                    wrongTaxa._PositionIntheDepthOne = obj.bEnd;
+                }
 
-                    wrongTaxa = new WrongTaxa();
+                qQuartet = new Quartet();
+                qQuartet._First_Taxa_Value = obj.taStart;
+                qQuartet._Second_Taxa_Value = obj.taEnd;
+                qQuartet._Third_Taxa_Value = obj.tbStart;
+                qQuartet._Fourth_Taxa_Value = obj.tbEnd;
+                wrongTaxa.Quartet = qQuartet;
 
-                    if (obj.WrongPositionStatus == WrongPositionStatus.aStart)
-                    {
-                        wrongTaxa.wrongPositionStatus = WrongPositionStatus.aStart;
-                        wrongTaxa.Taxa = getTaxa(obj.taStart);
-                        wrongTaxa._PositionIntheDepthOne = obj.aStart;
-                    }
-                    else if (obj.WrongPositionStatus == WrongPositionStatus.aEnd)
-                    {
-                        wrongTaxa.wrongPositionStatus = WrongPositionStatus.aEnd;
-                        wrongTaxa.Taxa = getTaxa(obj.taEnd);
-                        wrongTaxa._PositionIntheDepthOne = obj.aEnd;
-                    }
-                    else if (obj.WrongPositionStatus == WrongPositionStatus.bStart)
-                    {
-                        wrongTaxa.wrongPositionStatus = WrongPositionStatus.bStart;
-                        wrongTaxa.Taxa = getTaxa(obj.tbStart);
-                        wrongTaxa._PositionIntheDepthOne = obj.bStart;
-                    }
-                    else if (obj.WrongPositionStatus == WrongPositionStatus.bEnd)
-                    {
-                        wrongTaxa.wrongPositionStatus = WrongPositionStatus.bEnd;
-                        wrongTaxa.Taxa = getTaxa(obj.tbEnd);
-                        wrongTaxa._PositionIntheDepthOne = obj.bEnd;
-                    }
-
-                    qQuartet = new Quartet();
-                    qQuartet._First_Taxa_Value = obj.taStart;
-                    qQuartet._Second_Taxa_Value = obj.taEnd;
-                    qQuartet._Third_Taxa_Value = obj.tbStart;
-                    qQuartet._Fourth_Taxa_Value = obj.tbEnd;
-                    wrongTaxa.Quartet = qQuartet;
-
-
+                if (!isInWrongTaxa(wrongTaxa.Taxa._Taxa_Value))
                     wrongPositionedTaxaList.Add(wrongTaxa);
-                }
-                else
-                {
-                    int aStart = 0;
-                    string taStart = "";
 
-                    int aEnd = 0;
-                    string taEnd = "";
-
-                    int bStart = 0;
-                    string tbStart = "";
-
-                    int bEnd = 0;
-                    string tbEnd = "";
-
-                    if (isInWrongTaxa(t1._Taxa_Value))
-                    {
-                        //aStart
-                        taStart = t1._Taxa_Value;
-
-                    }
-                    else
-                    {
-
-                    }
-                    if (isInWrongTaxa(t2._Taxa_Value))
-                    {
-                        //aEnd
-                        taEnd = t2._Taxa_Value;
-                    }
-                    if (isInWrongTaxa(t3._Taxa_Value))
-                    {
-                        //bStart
-                        tbStart = t3._Taxa_Value;
-                    }
-                    if (isInWrongTaxa(t4._Taxa_Value))
-                    {
-                        //bEnd
-                        tbEnd = t4._Taxa_Value;
-                    }
-
-                    obj = CalculateWrongPosition(p1, t1._Taxa_Value, p2, t2._Taxa_Value, p3, t3._Taxa_Value, p4, t4._Taxa_Value, q);
-                }
-                i++;
             }
 
         }
@@ -261,6 +220,7 @@ namespace TreeConstructionFromQuartets
         {
             WrongPositionStatusClass statusClass = new WrongPositionStatusClass();
             WrongPositionStatus status = WrongPositionStatus.None;
+
 
             if (status == WrongPositionStatus.None)
                 status = whoisInWrongPosition(p1, t1, p2, t2, p3, t3, p4, t4, q);
@@ -497,6 +457,22 @@ namespace TreeConstructionFromQuartets
             }
             return isExist;
         }
+
+        public int isInWrongTaxaAndGetPosition(string taxa)
+        {
+            int i = -1;
+
+            foreach (WrongTaxa tx in wrongPositionedTaxaList)
+            {
+                if (tx.Taxa._Taxa_Value == taxa)
+                {
+
+                    i = tx._PositionIntheDepthOne;
+                    break;
+                }
+            }
+            return i;
+        }
         //#endregion
         public bool inBetween(int v1, int v2, int v3)
         {
@@ -544,7 +520,31 @@ namespace TreeConstructionFromQuartets
         public WrongPositionStatus whoisInWrongPosition(int aStart, string taStart, int aEnd, string taEnd, int bStart, string tbStart, int bEnd, string tbEnd, Quartet q)
         {
             WrongPositionStatus status = WrongPositionStatus.None;
-             
+
+            if (isInWrongTaxa(taStart))
+            {
+                status = WrongPositionStatus.aStart;
+                return status;
+            }
+
+            if (isInWrongTaxa(taEnd))
+            {
+                status = WrongPositionStatus.aEnd;
+                return status;
+            }
+
+            if (isInWrongTaxa(tbStart))
+            {
+                status = WrongPositionStatus.bStart;
+                return status;
+            }
+
+            if (isInWrongTaxa(tbEnd))
+            {
+                status = WrongPositionStatus.bEnd;
+                return status;
+            }
+
 
             if (inBetween(aStart, bStart, aEnd) && inBetween(aStart, bEnd, aEnd) && bStart < bEnd)
             {
