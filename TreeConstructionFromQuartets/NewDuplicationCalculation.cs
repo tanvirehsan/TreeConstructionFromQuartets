@@ -13,10 +13,12 @@ namespace TreeConstructionFromQuartets
     public class NewDuplicationCalculation
     {
         #region Variables
+        public FinalPartition finalPartitionAfterDepthOneElement = new FinalPartition();
         public DepthOnleElementModel depth1Elements = new DepthOnleElementModel();
         public List<Quartet> ListOfInconsistent = new List<Quartet>();
         string PathDepthOne = ConfigurationManager.AppSettings["PathDepthOne"].ToString();
         string PathInconsistentQuatret = ConfigurationManager.AppSettings["PathInconsistentQuatret"].ToString();
+        string PathFinalPartitionAfterDepthOne = ConfigurationManager.AppSettings["PathFinalPartitionAfterDepthOne"].ToString();
         List<WrongTaxa> wrongPositionedTaxaList = new List<WrongTaxa>();
         #endregion
 
@@ -126,6 +128,72 @@ namespace TreeConstructionFromQuartets
 
 
         }
+        public FinalPartition readFinalPartitionInput(string path)
+        {
+
+            string readText = string.Empty;
+            var pattern = @"\{(.*?)\}";
+            FinalPartition model = new FinalPartition();
+            if (File.Exists(path))
+            {
+                readText = File.ReadAllText(path);
+
+            }
+            else
+            {
+                return new FinalPartition();
+            }
+            if (!string.IsNullOrEmpty(readText))
+            {
+                var matches = Regex.Matches(readText, pattern);
+                List<TreeNode> TreeNodes = new List<TreeNode>();
+                TreeNode node;
+                int i = 1;
+                int count = 0;
+                foreach (Match m in matches)
+                {
+                    TreeNodes = new List<TreeNode>();
+                    string values = m.Groups[1].Value.Trim();
+                    string[] array = values.Split(',');
+
+                    node = new TreeNode();
+                    node._Position = i;
+                    List<Taxa> taxas = new List<Taxa>();
+                    foreach (string v in array)
+                    {
+
+                        Taxa t = new Taxa();
+                        t._Taxa_Value = v.Trim();
+                        taxas.Add(t);
+
+                    }
+                    if (taxas.Count != 0)
+                    {
+                        node.TaxaList = taxas;
+                        TreeNodes.Add(node);
+                    }
+
+                    if (TreeNodes.Count != 0 && count == 0)
+                    {
+                        model.LeftPart = new List<TreeNode>(TreeNodes);
+                    }
+                    if (TreeNodes.Count != 0 && count == 1)
+                    {
+                        model.RightPart = new List<TreeNode>(TreeNodes);
+                    }
+
+                    i++;
+                    count++;
+                }
+
+
+
+            }
+
+            return model;
+
+
+        }
         #endregion
 
         //Constructor
@@ -133,6 +201,7 @@ namespace TreeConstructionFromQuartets
         {
             depth1Elements = readDepthOneElementInput(PathDepthOne);
             ListOfInconsistent = readInconsistentQuatret(PathInconsistentQuatret);
+            finalPartitionAfterDepthOneElement = readFinalPartitionInput(PathFinalPartitionAfterDepthOne);
         }
         //Main Method to Calculate Wrong Taxa
         public void CalculateWrongTaxa()
@@ -199,7 +268,22 @@ namespace TreeConstructionFromQuartets
 
             }
 
+           
+
         }
+
+        public void calculateFinalDuplication()
+        {
+            foreach (Quartet q in ListOfInconsistent)
+            {
+                foreach (WrongTaxa tx in wrongPositionedTaxaList)
+                {
+                    PartStatus pp = fromwhichPart(tx.Taxa._Taxa_Value);
+                }
+
+            }
+        }
+
         public WrongPositionStatusClass getWrongPositionStatusClass(WrongPositionStatus status, int aStart, string taStart, int aEnd, string taEnd, int bStart, string tbStart, int bEnd, string tbEnd)
         {
             WrongPositionStatusClass obj = new WrongPositionStatusClass();
@@ -457,11 +541,64 @@ namespace TreeConstructionFromQuartets
 
 
 
+        public PartStatus fromwhichPart(string value)
+        {
+            bool leftPart = false;
+            PartStatus partStatus = PartStatus.None;
 
+            foreach (TreeNode node in finalPartitionAfterDepthOneElement.LeftPart)
+            {
+                var v = node.TaxaList.Where(x => x._Taxa_Value == value).FirstOrDefault();
+                if (v != null)
+                {
+                    if (v._Taxa_Value == value)
+                    {
+                        leftPart = true;
+                        partStatus = PartStatus.LeftPart;
+                        break;
+                    }
+                }
+            }
+
+            if (!leftPart)
+            {
+                foreach (TreeNode node in finalPartitionAfterDepthOneElement.RightPart)
+                {
+                    var v = node.TaxaList.Where(x => x._Taxa_Value == value).FirstOrDefault();
+                    if (v != null)
+                    {
+                        if (v._Taxa_Value == value)
+                        {
+
+                            partStatus = PartStatus.RightPart;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return partStatus;
+
+
+        }
 
     }
 
 
+
+
+    public class PartTaxa
+    {
+        PartStatus part { get; set; }
+        List<string> taxaList { get; set; }
+    }
+
+    public enum PartStatus
+    {
+        None,
+        LeftPart,
+        RightPart
+    }
     public class WrongPositionStatusClass
     {
         public WrongPositionStatus WrongPositionStatus { get; set; } = WrongPositionStatus.None;
@@ -487,6 +624,13 @@ namespace TreeConstructionFromQuartets
     public class DepthOnleElementModel
     {
         public List<TreeNode> NodeList { get; set; }
+    }
+
+
+    public class FinalPartition
+    {
+        public List<TreeNode> LeftPart { get; set; }
+        public List<TreeNode> RightPart { get; set; }
     }
 
     public class TreeNode
