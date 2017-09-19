@@ -22,6 +22,7 @@
                 {
                     NewDuplicationCalculation objNewDuplicationCalculation = new NewDuplicationCalculation();
                     objNewDuplicationCalculation.CalculateWrongTaxa();
+                    objNewDuplicationCalculation.CalculateFinalTree();
                 }
                 else
                 {

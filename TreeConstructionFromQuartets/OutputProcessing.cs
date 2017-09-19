@@ -649,6 +649,55 @@
             File.AppendAllText(Constant.OutputFilePath, sb.ToString());
 
         }
+
+        public static void printWrongPositionedTaxa(string path, List<Pair> pairs)
+        {
+
+            StringBuilder sb = new StringBuilder();
+            string ss = string.Empty;
+            foreach (Pair n in pairs)
+            {
+                ss = "("; 
+                ss = ss + n.tx1 + "," + n.tx2+" )"+"----wrong Taxa:"+ n.wrongTaxa+ "----Quatret:----"+n.Quatret; 
+                sb.AppendLine(ss); 
+            } 
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            File.AppendAllText(path, sb.ToString());
+        }
+
+        public static void printDepthOneWithNewDuplicationMethod(string path, List<TreeNode> NodeList)
+        {
+
+            StringBuilder sb = new StringBuilder();
+            string ss = string.Empty;
+            foreach (TreeNode n in NodeList)
+            {
+                ss = "{";
+                foreach (Taxa tx in n.TaxaList)
+                {
+                    ss = ss + tx._Taxa_Value + ",";
+                }
+
+                if (ss.Contains(","))
+                    ss = ss.Substring(0, ss.LastIndexOf(','));
+
+                ss = ss + "}" + " ";
+                sb.Append(ss);
+            }
+
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            File.AppendAllText(path, sb.ToString());
+        }
     }
 
 }
