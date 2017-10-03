@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -10,6 +11,7 @@
     {
         private List<string> _VALID_TAXA_LIST = new List<string>();
 
+        //string PathDepthOne = ConfigurationManager.AppSettings["PathDepthOne"].ToString();
 
         private List<Quartet> _ALLQuatretListAfterGain = new List<Quartet>();
         private List<Quartet> _DifferedQuatretListAfterGain = new List<Quartet>();
@@ -31,7 +33,7 @@
         private GainTable _FinalGainTableAfterGainCalculation = new GainTable();
         List<ConsistencyDataModel> _ListConsistencyDataModel = new List<ConsistencyDataModel>();
 
-        List<ConsistencyDataModel> _ListConsistencyDataModelRandom = new List<ConsistencyDataModel>(); 
+        List<ConsistencyDataModel> _ListConsistencyDataModelRandom = new List<ConsistencyDataModel>();
 
         public string DummyTaxaCharacter = "A";
 
@@ -55,9 +57,9 @@
             List<DepthOneTreeNode> ListDepthOneTreeNode = new List<DepthOneTreeNode>();
 
 
-            ConsistencyDataModel dataRandom = new ConsistencyDataModel();
-            DepthOneTreeNode nodeRandom;
-            List<DepthOneTreeNode> ListDepthOneTreeNodeRandom = new List<DepthOneTreeNode>();
+            //ConsistencyDataModel dataRandom = new ConsistencyDataModel();
+            //DepthOneTreeNode nodeRandom;
+            //List<DepthOneTreeNode> ListDepthOneTreeNodeRandom = new List<DepthOneTreeNode>();
 
 
             if (GainTable != null)
@@ -81,15 +83,17 @@
                 if (vViolated != null)
                     SetViolatedQuatretInput(vViolated.ToList());
 
-                OutputProcessing.PrintGainSummary(GainTable);
-                OutputProcessing.WriteCountInformationFromMaxGainTable(GainTable);
+                //OutputProcessing.PrintGainSummary(GainTable);
+                //OutputProcessing.WriteCountInformationFromMaxGainTable(GainTable);
 
 
                 _VALID_TAXA_LIST = input.Get_SetOfTaxa();
                 divideAndConquer.Divide(GainTable.PartitionSet, DummyTaxaCharacter, 1, _VALID_TAXA_LIST);
 
                 List<FinalPartionPair> ll = divideAndConquer.getFinalPartionPair();
-                OutputProcessing.PrintFinalTableOfDivideAndConquerApproach(ll);
+                //OutputProcessing.PrintFinalTableOfDivideAndConquerApproach(ll);
+                OutputProcessing.PrintDepthOneElement(ll);
+                
 
                 loop = 0;
                 foreach (FinalPartionPair pair in ll)
@@ -129,7 +133,7 @@
                 var vIsoInConsistent = dmodel._Isolated_Quatret.FindAll(x => x._ConsistancyStatus == ConsistencyStatus.InConsistent);
                 SetIsolatedQuatretInConsistentAfterDevideAndConquer(vIsoInConsistent);
 
-                OutputProcessing.WriteQuatretConsistancy(dmodel._Isolated_Quatret, PartitionStatus.Isolated, OutputHeader);
+                //OutputProcessing.WriteQuatretConsistancy(dmodel._Isolated_Quatret, PartitionStatus.Isolated, OutputHeader);
                 #endregion
 
                 #region Violated Quatret
@@ -141,7 +145,7 @@
                 var vViolatedInConsistent = dmodel._Violated_Quatret.FindAll(x => x._ConsistancyStatus == ConsistencyStatus.InConsistent);
                 SetViolatedQuatretInConsistentAfterDevideAndConquer(vViolatedInConsistent);
 
-                OutputProcessing.WriteQuatretConsistancy(dmodel._Violated_Quatret, PartitionStatus.Viotated, string.Empty);
+                //OutputProcessing.WriteQuatretConsistancy(dmodel._Violated_Quatret, PartitionStatus.Viotated, string.Empty);
                 #endregion
 
                 #region Differed  Quatret
@@ -153,58 +157,58 @@
                 var vDiffInConsistent = dmodel._Differed_Quatret.FindAll(x => x._ConsistancyStatus == ConsistencyStatus.InConsistent);
                 SetDifferedQuatretInConsistentAfterDevideAndConquer(vDiffInConsistent);
 
-                OutputProcessing.WriteQuatretConsistancy(dmodel._Differed_Quatret, PartitionStatus.Differed, string.Empty);
+                //OutputProcessing.WriteQuatretConsistancy(dmodel._Differed_Quatret, PartitionStatus.Differed, string.Empty);
                 #endregion
 
 
                 #endregion
 
 
-                #region Random Technique
+                /*    #region Random Technique
 
 
-                var listOfTaxaRandom = input.getSetOfTaxa();
-                divideAndConquer.generateDepthOneTreeRandomly(listOfTaxaRandom, DummyTaxaCharacter, 1, _VALID_TAXA_LIST, this._ALLQuatretListAfterGain);
+                    var listOfTaxaRandom = input.getSetOfTaxa();
+                    divideAndConquer.generateDepthOneTreeRandomly(listOfTaxaRandom, DummyTaxaCharacter, 1, _VALID_TAXA_LIST, this._ALLQuatretListAfterGain);
 
-                List<FinalPartionPair> llRandom = divideAndConquer.getFinalPartionPairRandom();
-                //OutputProcessing.PrintDepthOneTreeRandom(llRandom, "Random Depth One Tree");
-                loop = 0;
-                foreach (FinalPartionPair pair in llRandom)
-                {
-                    ListDepthOneTreeNodeRandom = new List<DepthOneTreeNode>();
-                    dataRandom = new ConsistencyDataModel();
-                    dataRandom._Differed_Quatret = this._DifferedQuatretListAfterGain;
-                    dataRandom._Isolated_Quatret = this._IsolatedQuatretListAfterGain;
-                    dataRandom._Violated_Quatret = this._ViolatedQuatretListAfterGain;
-                    dataRandom._ALL_Quatret = this._ALLQuatretListAfterGain;
-
-                    foreach (Taxa tx in pair._Root)
+                    List<FinalPartionPair> llRandom = divideAndConquer.getFinalPartionPairRandom();
+                    //OutputProcessing.PrintDepthOneTreeRandom(llRandom, "Random Depth One Tree");
+                    loop = 0;
+                    foreach (FinalPartionPair pair in llRandom)
                     {
-                        nodeRandom = new DepthOneTreeNode();
-                        nodeRandom._Position = loop;
-                        nodeRandom._Taxa_Value = tx._Taxa_Value;
-                        ListDepthOneTreeNodeRandom.Add(nodeRandom);
+                        ListDepthOneTreeNodeRandom = new List<DepthOneTreeNode>();
+                        dataRandom = new ConsistencyDataModel();
+                        dataRandom._Differed_Quatret = this._DifferedQuatretListAfterGain;
+                        dataRandom._Isolated_Quatret = this._IsolatedQuatretListAfterGain;
+                        dataRandom._Violated_Quatret = this._ViolatedQuatretListAfterGain;
+                        dataRandom._ALL_Quatret = this._ALLQuatretListAfterGain;
+
+                        foreach (Taxa tx in pair._Root)
+                        {
+                            nodeRandom = new DepthOneTreeNode();
+                            nodeRandom._Position = loop;
+                            nodeRandom._Taxa_Value = tx._Taxa_Value;
+                            ListDepthOneTreeNodeRandom.Add(nodeRandom);
+                        }
+                        dataRandom._DepthOneChain = ListDepthOneTreeNodeRandom;
+                        _ListConsistencyDataModelRandom.Add(dataRandom);
+                        loop++;
                     }
-                    dataRandom._DepthOneChain = ListDepthOneTreeNodeRandom;
-                    _ListConsistencyDataModelRandom.Add(dataRandom);
-                    loop++;
-                }
 
-                ConsistencyDataModel dmodelRandom = _ListConsistencyDataModelRandom[0];
-                //string OutputHeaderRandom = "======================================================Consistancy Calculation(Random Technique)======================================================";
+                    ConsistencyDataModel dmodelRandom = _ListConsistencyDataModelRandom[0];
+                    //string OutputHeaderRandom = "======================================================Consistancy Calculation(Random Technique)======================================================";
 
-                dmodelRandom._ALL_Quatret = GetConsistancyStatusOfQuatret(_ListConsistencyDataModelRandom, dmodelRandom._ALL_Quatret);
+                    dmodelRandom._ALL_Quatret = GetConsistancyStatusOfQuatret(_ListConsistencyDataModelRandom, dmodelRandom._ALL_Quatret);
 
-                var vConsistentRandom = dmodelRandom._ALL_Quatret.FindAll(x => x._ConsistancyStatus == ConsistencyStatus.Consistent);
-                SetRandomQuatretConsistentAfterDevideAndConquer(vConsistentRandom);
+                    var vConsistentRandom = dmodelRandom._ALL_Quatret.FindAll(x => x._ConsistancyStatus == ConsistencyStatus.Consistent);
+                    SetRandomQuatretConsistentAfterDevideAndConquer(vConsistentRandom);
 
-                var vInConsistentRandom = dmodelRandom._ALL_Quatret.FindAll(x => x._ConsistancyStatus == ConsistencyStatus.InConsistent);
-                SetRandomQuatretInConsistentAfterDevideAndConquer(vInConsistentRandom);
+                    var vInConsistentRandom = dmodelRandom._ALL_Quatret.FindAll(x => x._ConsistancyStatus == ConsistencyStatus.InConsistent);
+                    SetRandomQuatretInConsistentAfterDevideAndConquer(vInConsistentRandom);
 
-                //OutputProcessing.WriteQuatretConsistancy(dmodelRandom._ALL_Quatret, PartitionStatus.None, OutputHeaderRandom);
+                    //OutputProcessing.WriteQuatretConsistancy(dmodelRandom._ALL_Quatret, PartitionStatus.None, OutputHeaderRandom);
 
-                #endregion
-
+                    #endregion
+                */
             }
 
         }
@@ -247,21 +251,21 @@
 
 
                 _TaxaGainSummary = new List<Taxa>(m._TaxaGainSummary.Select(x => new Taxa()
-            {
+                {
 
-                _Taxa_Value = x._Taxa_Value,
-                _Quartet_Name = x._Quartet_Name,
-                _Taxa_ValuePosition_In_Quartet = x._Taxa_ValuePosition_In_Quartet,
-                _Gain = x._Gain,
-                _CumulativeGain = x._CumulativeGain,
-                IsFreeze = x.IsFreeze,
-                _IsolatedCount = x._IsolatedCount,
-                _ViotatedCount = x._ViotatedCount,
-                _DifferedCount = x._DifferedCount,
-                _SatisfiedCount = x._SatisfiedCount,
-                _TaxaPartitionSet = new PartitionSet(x._TaxaPartitionSet._PartitionSetName, x._TaxaPartitionSet._Final_Score, x._TaxaPartitionSet._IsolatedCount, x._TaxaPartitionSet._ViotatedCount, x._TaxaPartitionSet._SatisfiedCount, x._TaxaPartitionSet._DifferedCount, x._TaxaPartitionSet._taxValueForGainCalculation, x._TaxaPartitionSet._Gain, x._TaxaPartitionSet.PartitionList, x._TaxaPartitionSet._ListQuatrets),
-                StepK = x.StepK
-            })),
+                    _Taxa_Value = x._Taxa_Value,
+                    _Quartet_Name = x._Quartet_Name,
+                    _Taxa_ValuePosition_In_Quartet = x._Taxa_ValuePosition_In_Quartet,
+                    _Gain = x._Gain,
+                    _CumulativeGain = x._CumulativeGain,
+                    IsFreeze = x.IsFreeze,
+                    _IsolatedCount = x._IsolatedCount,
+                    _ViotatedCount = x._ViotatedCount,
+                    _DifferedCount = x._DifferedCount,
+                    _SatisfiedCount = x._SatisfiedCount,
+                    _TaxaPartitionSet = new PartitionSet(x._TaxaPartitionSet._PartitionSetName, x._TaxaPartitionSet._Final_Score, x._TaxaPartitionSet._IsolatedCount, x._TaxaPartitionSet._ViotatedCount, x._TaxaPartitionSet._SatisfiedCount, x._TaxaPartitionSet._DifferedCount, x._TaxaPartitionSet._taxValueForGainCalculation, x._TaxaPartitionSet._Gain, x._TaxaPartitionSet.PartitionList, x._TaxaPartitionSet._ListQuatrets),
+                    StepK = x.StepK
+                })),
                 _MaxCumulativeGain = m._MaxCumulativeGain,
                 TaxValue = m.TaxValue,
                 MaximumGainOfTaxValue = m.MaximumGainOfTaxValue,
@@ -612,24 +616,24 @@
                 if (q._ConsistancyStatus == ConsistencyStatus.InConsistent)
                 {
                     dummyQuatret = new Quartet()
-                  {
+                    {
 
-                      _First_Taxa_Value = q._Third_Taxa_Value,
-                      _Second_Taxa_Value = q._Fourth_Taxa_Value,
-                      _Third_Taxa_Value = q._First_Taxa_Value,
-                      _Fourth_Taxa_Value = q._Second_Taxa_Value,
-                      _Quartet_Name = q._Quartet_Name,
-                      _Quartet_Input = q._Quartet_Input,
-                      _Quartet_LeftPart = q._Quartet_LeftPart,
-                      _Quartet_LeftPartReverse = q._Quartet_LeftPartReverse,
-                      _Quartet_RightPart = q._Quartet_RightPart,
-                      _Quartet_RightPartReverse = q._Quartet_RightPartReverse,
-                      _isDistinct = q._isDistinct,
-                      _Frequency = q._Frequency,
-                      _ConsistancyStatus = q._ConsistancyStatus,
-                      _PartitionStatus = q._PartitionStatus
+                        _First_Taxa_Value = q._Third_Taxa_Value,
+                        _Second_Taxa_Value = q._Fourth_Taxa_Value,
+                        _Third_Taxa_Value = q._First_Taxa_Value,
+                        _Fourth_Taxa_Value = q._Second_Taxa_Value,
+                        _Quartet_Name = q._Quartet_Name,
+                        _Quartet_Input = q._Quartet_Input,
+                        _Quartet_LeftPart = q._Quartet_LeftPart,
+                        _Quartet_LeftPartReverse = q._Quartet_LeftPartReverse,
+                        _Quartet_RightPart = q._Quartet_RightPart,
+                        _Quartet_RightPartReverse = q._Quartet_RightPartReverse,
+                        _isDistinct = q._isDistinct,
+                        _Frequency = q._Frequency,
+                        _ConsistancyStatus = q._ConsistancyStatus,
+                        _PartitionStatus = q._PartitionStatus
 
-                  };
+                    };
                     q._ConsistancyStatus = CheckForInConsistency(_DepthOneChain, dummyQuatret);
 
                 }
@@ -710,6 +714,22 @@
                     status = ConsistencyStatus.Consistent;
                 }
                 else if (pos1 > pos2 && pos1 < pos3 && pos4 == pos3)
+                {
+                    status = ConsistencyStatus.Consistent;
+                }
+                else if (pos1 < pos2 && pos4 == pos3 && pos1 < pos3 && pos3 < pos2)
+                {
+                    status = ConsistencyStatus.Consistent;
+                }
+                else if (pos2 < pos1 && pos4 == pos3 && pos2 < pos3 && pos3 < pos1)
+                {
+                    status = ConsistencyStatus.Consistent;
+                }
+                else if (pos3 < pos4 && pos1 == pos2 && pos3 < pos1 && pos1 < pos4)
+                {
+                    status = ConsistencyStatus.Consistent;
+                }
+                else if (pos4 < pos3 && pos1 == pos2 && pos4 < pos1 && pos1 < pos3)
                 {
                     status = ConsistencyStatus.Consistent;
                 }

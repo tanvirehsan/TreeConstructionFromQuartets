@@ -46,9 +46,16 @@
                                     Constant.SetInputFilePath(file);
                                     if (DuplicationMethod.ToLower() == "old")
 
+                                    {
                                         Constant.SetOutputFilePath(FileDirectory + "\\" + Path.GetFileNameWithoutExtension(file) + "OutputOld.txt");
+                                    }
                                     else
+                                    {
                                         Constant.SetOutputFilePath(FileDirectory + "\\" + Path.GetFileNameWithoutExtension(file) + "OutputNew.txt");
+                                    }
+
+                                    Constant.SetOutputFilePathForDepthOne(FileDirectory + "\\" + Path.GetFileNameWithoutExtension(file) + "_DepethOne.txt");
+                                    Constant.SetOutputFilePathForInconsistent(FileDirectory + "\\" + Path.GetFileNameWithoutExtension(file) + "_InConsistentQuatret.txt");
 
                                     obj = new ProgramCalculation();
                                     try

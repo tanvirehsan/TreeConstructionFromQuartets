@@ -197,6 +197,43 @@
             File.AppendAllText(Constant.OutputFilePath, sb.ToString());
         }
 
+        public static void PrintDepthOneElement(List<FinalPartionPair> _ListFinalPartionPair)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            string val0 = string.Empty;
+            string val1 = string.Empty;
+            foreach (FinalPartionPair obj in _ListFinalPartionPair)
+            {
+                val0 = "{";
+
+
+                foreach (Taxa tx in obj._P.TaxaList)
+                {
+                    val0 = val0 + tx._Taxa_Value + ",";
+                }
+                if (val0.Contains(","))
+                    val0 = val0.Substring(0, val0.LastIndexOf(',')) + "}";
+                else
+                    val0 = val0 + "}";
+
+
+
+                sb.Append(" " + val0 + " " + val1);
+            }
+
+            sb.AppendLine("");
+            //sb.AppendLine("---------------------------------------------------");
+
+            //File.WriteAllText(Constant.OutputFilePath, sb.ToString());
+            if (File.Exists(Constant.OutputFilePathForDepthOne))
+            {
+                File.Delete(Constant.OutputFilePathForDepthOne);
+            }
+
+            File.AppendAllText(Constant.OutputFilePathForDepthOne, sb.ToString());
+        }
+
         public static void PrintDepthOneTreeRandom(List<FinalPartionPair> _ListFinalPartionPair, string Title = "Depth One Element (Randomized)")
         {
             StringBuilder sb = new StringBuilder();
@@ -569,6 +606,27 @@
 
         }
 
+        public static void WriteListOfQuatretInConsistancyWithNewPath(List<Quartet> Listq )
+        {
+            StringBuilder sb = new StringBuilder();
+            //sb.AppendLine("====================ALL InConsistent Quatret List(" + Listq.Count.ToString() + ")===============================");
+            string val = "";
+            foreach (Quartet q in Listq)
+            {
+                val = val + q._Quartet_Input + "  ";
+
+            }
+            sb.AppendLine(val);
+
+            if (File.Exists(Constant.OutputFilePathForInconsistent))
+            {
+                File.Delete(Constant.OutputFilePathForInconsistent);
+            }
+
+            File.AppendAllText(Constant.OutputFilePathForInconsistent, sb.ToString());
+
+        }
+
         public static void WriteQuatretConsistancy(List<Quartet> Listq, PartitionStatus status, string pHeader)
         {
             StringBuilder sb = new StringBuilder();
@@ -657,10 +715,10 @@
             string ss = string.Empty;
             foreach (Pair n in pairs)
             {
-                ss = "("; 
-                ss = ss + n.tx1 + "," + n.tx2+" )"+"----wrong Taxa:"+ n.wrongTaxa+ "----Quatret:----"+n.Quatret; 
-                sb.AppendLine(ss); 
-            } 
+                ss = "(";
+                ss = ss + n.tx1 + "," + n.tx2 + " )" + "----wrong Taxa:" + n.wrongTaxa + "----Quatret:----" + n.Quatret;
+                sb.AppendLine(ss);
+            }
 
             if (File.Exists(path))
             {

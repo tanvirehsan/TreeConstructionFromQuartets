@@ -43,7 +43,7 @@
             this.PartitionSets[0]._ListQuatrets = Set_Of_Sorted_Distinct_Quartets;
             PartitionSet p = this.PartitionSets[0];
             SetSortedDistinctQuartetsWithPartitionStatus(ref p, this.PartitionSets[0]);
-            OutputProcessing.WriteInititalBiPartion(p, this.Set_Of_Taxa); 
+            //OutputProcessing.WriteInititalBiPartion(p, this.Set_Of_Taxa); 
             GenerateGainTable(p);
             
         }
